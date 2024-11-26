@@ -54,4 +54,4 @@ resetButton.addEventListener('click', () => {
     tableBody.innerHTML = '';
     total = 0;
     totalCount.textContent = total;
-});
+})
