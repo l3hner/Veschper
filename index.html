@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leberkäswecken beim Jubiläumsmeisterkurs</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Verlinkung zum CSS -->
+</head>
+<body>
+    <header>Leberkäswecken beim Jubiläumsmeisterkurs</header>
+    <main>
+        <form id="order-form">
+            <div class="form-group">
+                <label for="yes-no">Möchtest du einen Leberkäswecken?</label>
+                <select id="yes-no" required>
+                    <option value="" disabled selected>Bitte wählen</option>
+                    <option value="Ja">Ja</option>
+                    <option value="Nein">Nein</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" placeholder="Dein Name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="quantity">Anzahl</label>
+                <select id="quantity" required>
+                    <option value="" disabled selected>Bitte wählen</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="1000000">Eine Million</option>
+                </select>
+            </div>
+
+            <button type="submit">Absenden</button>
+        </form>
+
+        <div id="confirmation" style="display: none; margin-top: 20px;">Danke für deine Bestellung!</div>
+
+        <table id="order-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Antwort</th>
+                    <th>Anzahl</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <div class="total">
+            Gesamtanzahl: <span id="total-count">0</span>
+        </div>
+
+        <button id="reset-button" style="margin-top: 20px;">Zurücksetzen</button>
+
+        <div class="dashboard">
+            <h4>Dashboard</h4>
+            <div id="daily-overview"></div>
+        </div>
+    </main>
+
+    <script src="script.js"></script> <!-- Verlinkung zum JavaScript -->
+</body>
+</html>
