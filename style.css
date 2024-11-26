@@ -1,0 +1,111 @@
+/* Allgemeine Stile */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+header {
+    background-color: #b30000;
+    color: gold;
+    text-align: center;
+    padding: 20px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+main {
+    max-width: 800px;
+    margin: 20px auto;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 20px;
+}
+
+label {
+    font-weight: bold;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+input, select, button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+button {
+    background-color: #b30000;
+    color: white;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #800000;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table th, table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+table th {
+    background-color: #b30000;
+    color: white;
+}
+
+.highlight {
+    color: gold;
+    font-weight: bold;
+}
+
+.total {
+    margin-top: 20px;
+    font-size: 18px;
+    text-align: center;
+    position: relative;
+}
+
+.total span {
+    color: gold;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.total::after {
+    content: "";
+    display: block;
+    width: 100px;
+    height: 100px;
+    border: 5px solid gold;
+    border-radius: 50%;
+    position: absolute;
+    top: -70px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: -1;
+}
+
+.dashboard {
+    margin-top: 20px;
+    background-color: #fff4e6;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
