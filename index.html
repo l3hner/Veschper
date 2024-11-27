@@ -68,6 +68,31 @@
         </section>
     </main>
 
-    <script src="script.js"></script>
+    <!-- Firebase SDKs einbinden -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics.js";
+        import { getFirestore } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCUznRu9r4_TF4bUoFHA7ABc9s6HchcFCQ",
+            authDomain: "veschper-10337.firebaseapp.com",
+            projectId: "veschper-10337",
+            storageBucket: "veschper-10337.appspot.com",
+            messagingSenderId: "669264661102",
+            appId: "1:669264661102:web:3caae52712766a2258f47f",
+            measurementId: "G-CWJH835EHH"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = getFirestore(app);
+    </script>
+
+    <!-- JavaScript Code für die Seite -->
+    <script src="script.js" type="module"></script>
 </body>
 </html>
