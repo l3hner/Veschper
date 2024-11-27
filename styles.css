@@ -1,15 +1,15 @@
 /* Allgemeine Stile */
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f9f9f9;
+    font-family: 'Roboto', sans-serif;
+    background-color: #f3f4f6;
     color: #333;
+    line-height: 1.6;
+    margin: 0;
 }
 
 header {
-    background-color: #b30000;
-    color: gold;
+    background-color: #6200ea;
+    color: #fff;
     text-align: center;
     padding: 20px;
     font-size: 24px;
@@ -19,10 +19,15 @@ header {
 main {
     max-width: 800px;
     margin: 20px auto;
-    background-color: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
     padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.order-section {
+    padding: 20px;
+    border-bottom: 2px solid #ececec;
 }
 
 label {
@@ -30,10 +35,10 @@ label {
 }
 
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
-input, select, button {
+input, select {
     width: 100%;
     padding: 10px;
     margin-top: 5px;
@@ -42,15 +47,18 @@ input, select, button {
 }
 
 button {
-    background-color: #b30000;
-    color: white;
-    font-weight: bold;
+    background-color: #6200ea;
+    color: #fff;
     border: none;
+    padding: 10px;
+    width: 100%;
     cursor: pointer;
+    border-radius: 4px;
+    font-weight: bold;
 }
 
 button:hover {
-    background-color: #800000;
+    background-color: #3700b3;
 }
 
 table {
@@ -66,46 +74,49 @@ table th, table td {
 }
 
 table th {
-    background-color: #b30000;
-    color: white;
+    background-color: #6200ea;
+    color: #fff;
 }
 
-.highlight {
-    color: gold;
-    font-weight: bold;
+.confirmation-message {
+    display: none;
+    margin-top: 20px;
+    background-color: #d4edda;
+    color: #155724;
+    padding: 10px;
+    border-radius: 4px;
+    text-align: center;
 }
 
 .total {
     margin-top: 20px;
     font-size: 18px;
     text-align: center;
-    position: relative;
 }
 
 .total span {
-    color: gold;
-    font-size: 22px;
     font-weight: bold;
+    color: #6200ea;
 }
 
-.total::after {
-    content: "";
-    display: block;
-    width: 100px;
-    height: 100px;
-    border: 5px solid gold;
-    border-radius: 50%;
-    position: absolute;
-    top: -70px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: -1;
+.reset-button {
+    background-color: #b00020;
+    margin-top: 20px;
+    padding: 10px;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    width: 100%;
+}
+
+.reset-button:hover {
+    background-color: #790000;
 }
 
 .dashboard {
     margin-top: 20px;
-    background-color: #fff4e6;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    background-color: #e3f2fd;
+    padding: 15px;
+    border-radius: 8px;
 }
