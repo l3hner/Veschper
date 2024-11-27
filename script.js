@@ -5,6 +5,8 @@ const totalCount = document.getElementById('total-count');
 const confirmation = document.getElementById('confirmation');
 const resetButton = document.getElementById('reset-button');
 const dailyOverview = document.getElementById('daily-overview');
+const yesNoSelect = document.getElementById('yes-no');
+const quantitySelect = document.getElementById('quantity');
 
 // Variablen für Bestellungen und Gesamtanzahl
 let total = 0;
@@ -15,26 +17,28 @@ form.addEventListener('submit', (e) => {
     e.preventDefault();
 
     // Eingaben validieren
-    const yesNo = document.getElementById('yes-no').value;
+    const yesNo = yesNoSelect.value;
     const name = document.getElementById('name').value.trim();
-    const quantity = parseInt(document.getElementById('quantity').value);
+    const quantity = parseInt(quantitySelect.value);
 
-    if (!yesNo || !name || isNaN(quantity)) {
+    if (!yesNo || !name || (yesNo === 'Ja' && isNaN(quantity))) {
         alert('Bitte fülle alle Felder korrekt aus!');
         return;
     }
 
     // Bestellung in die Tabelle einfügen
     const row = document.createElement('tr');
-    row.innerHTML = `<td>${name}</td><td>${yesNo}</td><td>${quantity}</td>`;
+    row.innerHTML = `<td>${name}</td><td>${yesNo}</td><td>${yesNo === 'Ja' ? quantity : '-'}</td>`;
     tableBody.appendChild(row);
 
-    // Gesamtanzahl aktualisieren
-    total += quantity;
+    // Gesamtanzahl aktualisieren, nur wenn "Ja" ausgewählt wurde
+    if (yesNo === 'Ja') {
+        total += quantity;
+    }
     totalCount.textContent = total;
 
     // Bestellung speichern
-    orders.push({ name, yesNo, quantity });
+    orders.push({ name, yesNo, quantity: yesNo === 'Ja' ? quantity : 0 });
 
     // Bestätigungsanzeige
     confirmation.style.display = 'block';
@@ -42,16 +46,32 @@ form.addEventListener('submit', (e) => {
 
     // Formular zurücksetzen
     form.reset();
+    quantitySelect.disabled = false; // Zurücksetzen des Zustands der Menge-Auswahl
 });
 
-// Rücksetzen-Button
-resetButton.addEventListener('click', () => {
-    // Tagesübersicht speichern
-    const date = new Date().toLocaleDateString();
-    dailyOverview.innerHTML += `<p>${date}: ${total} Leberkäswecken</p>`;
+// Abhängigkeit von Ja/Nein für die Anzahl-Auswahl
+yesNoSelect.addEventListener('change', () => {
+    if (yesNoSelect.value === 'Nein') {
+        quantitySelect.value = '';
+        quantitySelect.disabled = true;
+    } else {
+        quantitySelect.disabled = false;
+    }
+});
 
-    // Tabelle und Summen zurücksetzen
-    tableBody.innerHTML = '';
-    total = 0;
-    totalCount.textContent = total;
-})
+// Rücksetzen-Button mit Passwortabfrage
+resetButton.addEventListener('click', () => {
+    const password = prompt('Bitte gib das Passwort ein, um die Daten zurückzusetzen:');
+    if (password === 'geheimesPasswort') { // Hier kannst du das Passwort nach Belieben ändern
+        // Tagesübersicht speichern
+        const date = new Date().toLocaleDateString();
+        dailyOverview.innerHTML += `<p>${date}: ${total} Leberkäswecken</p>`;
+
+        // Tabelle und Summen zurücksetzen
+        tableBody.innerHTML = '';
+        total = 0;
+        totalCount.textContent = total;
+    } else {
+        alert('Falsches Passwort. Zurücksetzen nicht möglich.');
+    }
+});
