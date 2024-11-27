@@ -1,3 +1,6 @@
+import { collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+
 // DOM-Elemente referenzieren
 const form = document.getElementById('order-form');
 const tableBody = document.querySelector('#order-table tbody');
@@ -8,32 +11,34 @@ const dailyOverview = document.getElementById('daily-overview');
 const yesNoSelect = document.getElementById('yes-no');
 const quantitySelect = document.getElementById('quantity');
 
-// Variablen für Bestellungen und Gesamtanzahl
-let total = 0;
-let orders = [];
+// Initialisiere Firestore (benutze die bereits initialisierte db aus Firebase Config)
+const db = getFirestore();
 
-// Daten aus dem localStorage laden
-window.addEventListener('load', () => {
-    const storedOrders = JSON.parse(localStorage.getItem('orders')) || [];
-    const storedTotal = parseInt(localStorage.getItem('total')) || 0;
-    const storedDailyOverview = localStorage.getItem('dailyOverview') || '';
+// Daten laden
+window.addEventListener('load', async () => {
+    const ordersSnapshot = await getDocs(collection(db, "orders"));
+    let total = 0;
 
-    orders = storedOrders;
-    total = storedTotal;
-
-    // Tabelle und Summen aktualisieren
-    orders.forEach(order => {
+    ordersSnapshot.forEach((doc) => {
+        const order = doc.data();
         const row = document.createElement('tr');
         row.innerHTML = `<td>${order.name}</td><td>${order.yesNo}</td><td>${order.quantity === 0 ? '-' : order.quantity}</td>`;
         tableBody.appendChild(row);
+        if (order.yesNo === 'Ja') {
+            total += order.quantity;
+        }
     });
 
     totalCount.textContent = total;
-    dailyOverview.innerHTML = storedDailyOverview;
+
+    const overviewSnapshot = await getDocs(collection(db, "dailyOverview"));
+    overviewSnapshot.forEach((doc) => {
+        dailyOverview.innerHTML += `<p>${doc.data().date}: ${doc.data().total} Leberkäswecken</p>`;
+    });
 });
 
 // Formular-Submit-Ereignis
-form.addEventListener('submit', (e) => {
+form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     // Eingaben validieren
@@ -51,18 +56,19 @@ form.addEventListener('submit', (e) => {
     row.innerHTML = `<td>${name}</td><td>${yesNo}</td><td>${yesNo === 'Ja' ? quantity : '-'}</td>`;
     tableBody.appendChild(row);
 
-    // Gesamtanzahl aktualisieren, nur wenn "Ja" ausgewählt wurde
+    // Firebase-Daten speichern
+    await addDoc(collection(db, "orders"), {
+        name: name,
+        yesNo: yesNo,
+        quantity: yesNo === 'Ja' ? quantity : 0
+    });
+
+    // Gesamtanzahl aktualisieren
+    let currentTotal = parseInt(totalCount.textContent);
     if (yesNo === 'Ja') {
-        total += quantity;
+        currentTotal += quantity;
     }
-    totalCount.textContent = total;
-
-    // Bestellung speichern
-    orders.push({ name, yesNo, quantity: yesNo === 'Ja' ? quantity : 0 });
-
-    // Daten im localStorage speichern
-    localStorage.setItem('orders', JSON.stringify(orders));
-    localStorage.setItem('total', total);
+    totalCount.textContent = currentTotal;
 
     // Bestätigungsanzeige
     confirmation.style.display = 'block';
@@ -70,7 +76,7 @@ form.addEventListener('submit', (e) => {
 
     // Formular zurücksetzen
     form.reset();
-    quantitySelect.disabled = false; // Zurücksetzen des Zustands der Menge-Auswahl
+    quantitySelect.disabled = false;
 });
 
 // Abhängigkeit von Ja/Nein für die Anzahl-Auswahl
@@ -84,21 +90,26 @@ yesNoSelect.addEventListener('change', () => {
 });
 
 // Rücksetzen-Button mit Passwortabfrage
-resetButton.addEventListener('click', () => {
+resetButton.addEventListener('click', async () => {
     const password = prompt('Bitte gib das Passwort ein, um die Daten zurückzusetzen:');
     if (password === 'meister') {
-        // Tagesübersicht speichern
         const date = new Date().toLocaleDateString();
-        dailyOverview.innerHTML += `<p>${date}: ${total} Leberkäswecken</p>`;
-        localStorage.setItem('dailyOverview', dailyOverview.innerHTML);
+        const total = parseInt(totalCount.textContent);
+
+        await addDoc(collection(db, "dailyOverview"), {
+            date: date,
+            total: total
+        });
+
+        // Firebase-Bestellungen löschen
+        const ordersSnapshot = await getDocs(collection(db, "orders"));
+        ordersSnapshot.forEach(async (docItem) => {
+            await deleteDoc(doc(db, "orders", docItem.id));
+        });
 
         // Tabelle und Summen zurücksetzen
         tableBody.innerHTML = '';
-        total = 0;
-        totalCount.textContent = total;
-        orders = [];
-        localStorage.removeItem('orders');
-        localStorage.removeItem('total');
+        totalCount.textContent = 0;
     } else {
         alert('Falsches Passwort. Zurücksetzen nicht möglich.');
     }
