@@ -62,7 +62,7 @@ yesNoSelect.addEventListener('change', () => {
 // Rücksetzen-Button mit Passwortabfrage
 resetButton.addEventListener('click', () => {
     const password = prompt('Bitte gib das Passwort ein, um die Daten zurückzusetzen:');
-    if (password === 'geheimesPasswort') { // Hier kannst du das Passwort nach Belieben ändern
+    if (password === 'Meister') { // Hier kannst du das Passwort nach Belieben ändern
         // Tagesübersicht speichern
         const date = new Date().toLocaleDateString();
         dailyOverview.innerHTML += `<p>${date}: ${total} Leberkäswecken</p>`;
