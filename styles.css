@@ -113,14 +113,21 @@ table th {
     left: 0;
     width: 100%;
     height: 150px;
-    background-image: url('https://via.placeholder.com/1500x300.png'); /* Beispielbild */
-    background-size: cover;
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
+}
+
+.background-image {
+    width: 100%;
+    height: auto;
+    max-height: 150px;
+    object-fit: cover;
 }
 
 .scroll-text {
+    position: absolute;
     font-size: 24px;
     color: #FFF;
     background-color: rgba(0, 0, 0, 0.5);
