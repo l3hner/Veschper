@@ -71,13 +71,15 @@
             <canvas id="chartCanvas"></canvas>
         </section>
 
-        <!-- Das Bild unterhalb des Hauptinhalts -->
+        <!-- Das Bild unterhalb des Hauptinhalts mit zentriertem Text -->
         <section class="image-section">
-            <img src="./images/meisterkurs-appetit.jpg" alt="Meisterkurs Appetit" class="image-bordered">
+            <div class="image-wrapper">
+                <img src="./images/meisterkurs-appetit.jpg" alt="Meisterkurs Appetit" class="image-bordered">
+                <div class="overlay-text">Der Meisterkurs wünscht Ihnen einen guten Appetit!</div>
+            </div>
         </section>
     </main>
 
-    <!-- Firebase SDKs einbinden -->
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
 
