@@ -16,31 +16,6 @@ header {
     font-weight: bold;
 }
 
-.parallax-container {
-    position: relative;
-    overflow: hidden;
-    height: 400px;
-}
-
-.parallax-image {
-    width: 100%;
-    height: auto;
-    transform: translateY(0);
-    transition: transform 0.1s linear;
-}
-
-.parallax-content {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    color: white;
-    background-color: rgba(0, 0, 0, 0.5);
-    padding: 20px;
-    border-radius: 8px;
-}
-
 main {
     max-width: 800px;
     margin: 20px auto;
@@ -129,4 +104,18 @@ table th {
 
 .csv-button:hover {
     background-color: #006400;
+}
+
+/* Bild unterhalb des Hauptinhalts */
+.image-section {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.image-bordered {
+    width: 100%;
+    max-width: 100%;
+    border: 5px solid gold; /* Goldener Rahmen um das Bild */
+    border-radius: 8px;
+    margin-top: 10px;
 }
