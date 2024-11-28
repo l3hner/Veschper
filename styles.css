@@ -18,12 +18,15 @@ header {
 
 .parallax-container {
     position: relative;
+    overflow: hidden;
     height: 400px;
-    background-image: url('./images/meisterkurs-appetit.jpg');
-    background-attachment: fixed;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+}
+
+.parallax-image {
+    width: 100%;
+    height: auto;
+    transform: translateY(0);
+    transition: transform 0.1s linear;
 }
 
 .parallax-content {
