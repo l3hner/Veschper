@@ -1,3 +1,4 @@
+// DOM-Elemente referenzieren
 const form = document.getElementById('order-form');
 const tableBody = document.querySelector('#order-table tbody');
 const totalCount = document.getElementById('total-count');
@@ -8,7 +9,17 @@ const yesNoSelect = document.getElementById('yes-no');
 const quantitySelect = document.getElementById('quantity');
 const downloadCsvButton = document.getElementById('download-csv');
 const chartCanvas = document.getElementById('chartCanvas');
+const parallaxContainer = document.querySelector('.parallax-container');
 
+// Parallax-Scrolling Effekt
+window.addEventListener('scroll', function() {
+    let scrollPosition = window.pageYOffset;
+    if (parallaxContainer) {
+        parallaxContainer.style.backgroundPositionY = (scrollPosition * 0.5) + 'px';
+    }
+});
+
+// Animation bei Absenden
 function showFunnyAnimation() {
     confirmation.innerHTML = 'Leberkäs fliegt los! 🥪🚀';
     confirmation.style.display = 'block';
@@ -18,6 +29,7 @@ function showFunnyAnimation() {
     }, 3000);
 }
 
+// Abhängigkeit von Ja/Nein für die Anzahl-Auswahl einstellen
 yesNoSelect.addEventListener('change', () => {
     if (yesNoSelect.value === 'Nein') {
         quantitySelect.value = '';
@@ -27,6 +39,7 @@ yesNoSelect.addEventListener('change', () => {
     }
 });
 
+// Daten laden und anzeigen, wenn die Seite geladen wird
 window.addEventListener('load', () => {
     db.collection("websiteState").doc("currentState").get()
         .then((doc) => {
@@ -34,12 +47,14 @@ window.addEventListener('load', () => {
                 const data = doc.data();
                 totalCount.textContent = data.totalCount || 0;
 
+                // Tabelle wiederherstellen
                 data.orders.forEach(order => {
                     const row = document.createElement('tr');
                     row.innerHTML = `<td>${order.name}</td><td>${order.yesNo}</td><td>${order.quantity === 0 ? '-' : order.quantity}</td>`;
                     tableBody.appendChild(row);
                 });
 
+                // Dashboard wiederherstellen
                 dailyOverview.innerHTML = data.dailyOverviewHtml || '';
                 updateChart(data.dailyOverview);
             }
@@ -49,9 +64,11 @@ window.addEventListener('load', () => {
         });
 });
 
+// Formular-Submit-Ereignis, um den Zustand zu aktualisieren und zu speichern
 form.addEventListener('submit', (e) => {
     e.preventDefault();
 
+    // Eingaben validieren
     const yesNo = yesNoSelect.value;
     const name = document.getElementById('name').value.trim();
     const quantity = parseInt(quantitySelect.value);
@@ -61,24 +78,30 @@ form.addEventListener('submit', (e) => {
         return;
     }
 
+    // Bestellung in die Tabelle einfügen
     const row = document.createElement('tr');
     row.innerHTML = `<td>${name}</td><td>${yesNo}</td><td>${yesNo === 'Ja' ? quantity : '-'}</td>`;
     tableBody.appendChild(row);
 
+    // Gesamtanzahl aktualisieren
     let currentTotal = parseInt(totalCount.textContent);
     if (yesNo === 'Ja') {
         currentTotal += quantity;
     }
     totalCount.textContent = currentTotal;
 
+    // Animation zeigen
     showFunnyAnimation();
 
+    // Den aktuellen Zustand in Firestore speichern
     saveStateToFirestore();
 
+    // Formular zurücksetzen
     form.reset();
     quantitySelect.disabled = false;
 });
 
+// Rücksetzen-Button mit Passwortabfrage
 resetButton.addEventListener('click', () => {
     const password = prompt('Bitte gib das Passwort ein, um die Daten zurückzusetzen:');
     if (password === 'meister') {
@@ -89,12 +112,14 @@ resetButton.addEventListener('click', () => {
             date: date,
             total: total
         }).then(() => {
+            // Setze den Zustand zurück
             db.collection("websiteState").doc("currentState").set({
                 totalCount: 0,
                 orders: [],
                 dailyOverviewHtml: '',
                 dailyOverview: [{ date: date, total: total }]
             }).then(() => {
+                // Tabelle und Summen zurücksetzen
                 tableBody.innerHTML = '';
                 totalCount.textContent = 0;
                 dailyOverview.innerHTML = '';
@@ -108,6 +133,7 @@ resetButton.addEventListener('click', () => {
     }
 });
 
+// Funktion zum Speichern des aktuellen Zustands in Firestore
 function saveStateToFirestore() {
     const orders = [];
     document.querySelectorAll('#order-table tbody tr').forEach((row) => {
@@ -121,6 +147,7 @@ function saveStateToFirestore() {
 
     const dailyOverviewHtml = dailyOverview.innerHTML;
 
+    // Speichere den aktuellen Zustand in Firebase
     db.collection("websiteState").doc("currentState").set({
         totalCount: parseInt(totalCount.textContent),
         orders: orders,
@@ -132,6 +159,7 @@ function saveStateToFirestore() {
     });
 }
 
+// CSV-Download-Funktion
 downloadCsvButton.addEventListener('click', () => {
     let csvContent = "data:text/csv;charset=utf-8,Name,Antwort,Anzahl\n";
     tableBody.querySelectorAll('tr').forEach(row => {
@@ -148,6 +176,7 @@ downloadCsvButton.addEventListener('click', () => {
     document.body.removeChild(link);
 });
 
+// Update Diagramm mit Chart.js
 function updateChart(dailyOverviewData) {
     const labels = dailyOverviewData.map(entry => entry.date);
     const data = dailyOverviewData.map(entry => entry.total);
