@@ -8,7 +8,7 @@ body {
 }
 
 header {
-    background-color: #8B4513; /* Holzbau-Farben */
+    background-color: #6B4226; /* Holzbraun-Ton */
     color: #FFF;
     text-align: center;
     padding: 20px;
@@ -42,7 +42,7 @@ input, select, button {
 }
 
 button {
-    background-color: #8B4513; /* Holzbau-Farben */
+    background-color: #6B4226; /* Holzbraun-Ton */
     color: white;
     font-weight: bold;
     border: none;
@@ -50,7 +50,7 @@ button {
 }
 
 button:hover {
-    background-color: #5A2A0D; /* Dunklerer Holz-Ton */
+    background-color: #4E2C1B; /* Dunklerer Holz-Ton */
 }
 
 table {
@@ -66,13 +66,8 @@ table th, table td {
 }
 
 table th {
-    background-color: #8B4513; /* Holzbau-Farben */
+    background-color: #6B4226; /* Holzbraun-Ton */
     color: white;
-}
-
-.highlight {
-    color: #8B4513;
-    font-weight: bold;
 }
 
 .total {
@@ -82,15 +77,9 @@ table th {
     position: relative;
 }
 
-.total span {
-    color: #8B4513; /* Holzbau-Farben */
-    font-size: 22px;
-    font-weight: bold;
-}
-
 .reset-button {
     margin-top: 20px;
-    background-color: #B22222; /* Ein roter Farbton für den Reset-Button */
+    background-color: #B22222; /* Roter Farbton für Reset */
     color: white;
     padding: 10px;
     border: none;
@@ -103,10 +92,38 @@ table th {
     background-color: #8B0000;
 }
 
-.dashboard {
-    margin-top: 20px;
-    background-color: #fff4e6;
+.csv-button {
+    margin-top: 10px;
+    background-color: #228B22; /* Waldgrün-Ton */
+    color: white;
     padding: 10px;
-    border: 1px solid #ddd;
+    border: none;
     border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.csv-button:hover {
+    background-color: #006400; /* Dunkleres Grün */
+}
+
+.scroll-image {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 150px;
+    background-image: url('https://via.placeholder.com/1500x300.png'); /* Beispielbild */
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.scroll-text {
+    font-size: 24px;
+    color: #FFF;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    border-radius: 5px;
 }
