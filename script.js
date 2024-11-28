@@ -9,16 +9,6 @@ const yesNoSelect = document.getElementById('yes-no');
 const quantitySelect = document.getElementById('quantity');
 const downloadCsvButton = document.getElementById('download-csv');
 const chartCanvas = document.getElementById('chartCanvas');
-const parallaxImage = document.querySelector('.parallax-image');
-
-// Parallax-Scrolling Effekt
-window.addEventListener('scroll', function() {
-    let scrollPosition = window.pageYOffset;
-
-    if (parallaxImage) {
-        parallaxImage.style.transform = 'translateY(' + (scrollPosition * 0.3) + 'px)';
-    }
-});
 
 // Animation bei Absenden
 function showFunnyAnimation() {
@@ -133,32 +123,6 @@ resetButton.addEventListener('click', () => {
         alert('Falsches Passwort. Zurücksetzen nicht möglich.');
     }
 });
-
-// Funktion zum Speichern des aktuellen Zustands in Firestore
-function saveStateToFirestore() {
-    const orders = [];
-    document.querySelectorAll('#order-table tbody tr').forEach((row) => {
-        const cells = row.querySelectorAll('td');
-        orders.push({
-            name: cells[0].textContent,
-            yesNo: cells[1].textContent,
-            quantity: cells[2].textContent === '-' ? 0 : parseInt(cells[2].textContent)
-        });
-    });
-
-    const dailyOverviewHtml = dailyOverview.innerHTML;
-
-    // Speichere den aktuellen Zustand in Firebase
-    db.collection("websiteState").doc("currentState").set({
-        totalCount: parseInt(totalCount.textContent),
-        orders: orders,
-        dailyOverviewHtml: dailyOverviewHtml
-    }).then(() => {
-        console.log("Der aktuelle Zustand wurde erfolgreich gespeichert.");
-    }).catch((error) => {
-        console.error("Fehler beim Speichern des Zustands: ", error);
-    });
-}
 
 // CSV-Download-Funktion
 downloadCsvButton.addEventListener('click', () => {
