@@ -7,6 +7,17 @@ const resetButton = document.getElementById('reset-button');
 const dailyOverview = document.getElementById('daily-overview');
 const yesNoSelect = document.getElementById('yes-no');
 const quantitySelect = document.getElementById('quantity');
+const downloadCsvButton = document.getElementById('download-csv');
+
+// Animation bei Absenden
+function showFunnyAnimation() {
+    confirmation.innerHTML = 'Leberkäs fliegt los! 🥪🚀';
+    confirmation.style.display = 'block';
+    setTimeout(() => {
+        confirmation.style.display = 'none';
+        confirmation.innerHTML = 'Danke für deine Bestellung!';
+    }, 3000);
+}
 
 // Abhängigkeit von Ja/Nein für die Anzahl-Auswahl einstellen
 yesNoSelect.addEventListener('change', () => {
@@ -42,7 +53,7 @@ window.addEventListener('load', () => {
         });
 });
 
-// Formular-Submit-Ereignis
+// Formular-Submit-Ereignis, um den Zustand zu aktualisieren und zu speichern
 form.addEventListener('submit', (e) => {
     e.preventDefault();
 
@@ -51,8 +62,8 @@ form.addEventListener('submit', (e) => {
     const name = document.getElementById('name').value.trim();
     const quantity = parseInt(quantitySelect.value);
 
-    if (!yesNo || !name || (yesNo === 'Ja' && isNaN(quantity))) {
-        alert('Bitte fülle alle Felder korrekt aus!');
+    if (!yesNo || !name || (yesNo === 'Ja' && isNaN(quantity)) || quantity === 1000000) {
+        alert('Eine Million Leberkäswecken sind leider nicht möglich!');
         return;
     }
 
@@ -68,9 +79,8 @@ form.addEventListener('submit', (e) => {
     }
     totalCount.textContent = currentTotal;
 
-    // Bestätigungsanzeige
-    confirmation.style.display = 'block';
-    setTimeout(() => (confirmation.style.display = 'none'), 3000);
+    // Animation zeigen
+    showFunnyAnimation();
 
     // Den aktuellen Zustand in Firestore speichern
     saveStateToFirestore();
@@ -135,3 +145,20 @@ function saveStateToFirestore() {
         console.error("Fehler beim Speichern des Zustands: ", error);
     });
 }
+
+// CSV-Download-Funktion
+downloadCsvButton.addEventListener('click', () => {
+    let csvContent = "data:text/csv;charset=utf-8,Name,Antwort,Anzahl\n";
+    tableBody.querySelectorAll('tr').forEach(row => {
+        let rowData = Array.from(row.querySelectorAll('td')).map(cell => cell.textContent).join(",");
+        csvContent += rowData + "\n";
+    });
+
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "leberkaeswecken_bestellungen.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+});
