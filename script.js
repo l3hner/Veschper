@@ -9,13 +9,14 @@ const yesNoSelect = document.getElementById('yes-no');
 const quantitySelect = document.getElementById('quantity');
 const downloadCsvButton = document.getElementById('download-csv');
 const chartCanvas = document.getElementById('chartCanvas');
-const parallaxContainer = document.querySelector('.parallax-container');
+const parallaxImage = document.querySelector('.parallax-image');
 
 // Parallax-Scrolling Effekt
 window.addEventListener('scroll', function() {
     let scrollPosition = window.pageYOffset;
-    if (parallaxContainer) {
-        parallaxContainer.style.backgroundPositionY = (scrollPosition * 0.5) + 'px';
+
+    if (parallaxImage) {
+        parallaxImage.style.transform = 'translateY(' + (scrollPosition * 0.3) + 'px)';
     }
 });
 
@@ -56,7 +57,7 @@ window.addEventListener('load', () => {
 
                 // Dashboard wiederherstellen
                 dailyOverview.innerHTML = data.dailyOverviewHtml || '';
-                updateChart(data.dailyOverview);
+                updateChart(data.dailyOverview || []);
             }
         })
         .catch((error) => {
