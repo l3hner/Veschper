@@ -6,6 +6,7 @@
     <title>Leberkäswecken beim Jubiläumsmeisterkurs</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <header>Leberkäswecken beim Jubiläumsmeisterkurs</header>
@@ -66,10 +67,11 @@
         <section class="dashboard">
             <h4>Dashboard</h4>
             <div id="daily-overview"></div>
+            <canvas id="chartCanvas"></canvas>
         </section>
 
         <div class="scroll-image">
-            <img src="images/meisterkurs-appetit.jpg" alt="Meisterkurs Appetit" class="background-image">
+            <img src="./images/meisterkurs-appetit.jpg" alt="Meisterkurs Appetit" class="responsive-image">
             <div class="scroll-text">Der Meisterkurs wünscht Ihnen einen guten Appetit!</div>
         </div>
     </main>
@@ -79,7 +81,6 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
 
     <script>
-        // Firebase-Konfiguration
         const firebaseConfig = {
             apiKey: "AIzaSyCUznRu9r4_TF4bUoFHA7ABc9s6HchcFCQ",
             authDomain: "veschper-10337.firebaseapp.com",
@@ -90,15 +91,12 @@
             measurementId: "G-ZE987JLHFT"
         };
 
-        // Firebase initialisieren
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // Die `db`-Variable global verfügbar machen
         window.db = db;
     </script>
 
-    <!-- JavaScript Datei einbinden -->
     <script src="script.js"></script>
 </body>
 </html>
