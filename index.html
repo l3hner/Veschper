@@ -68,28 +68,8 @@
         </section>
     </main>
 
-    <!-- Firebase SDKs einbinden -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-analytics-compat.js"></script>
-
-    <script>
-        // Firebase-Konfiguration einfügen (ersetze die Platzhalter mit deinen echten Firebase-Daten)
-        const firebaseConfig = {
-            apiKey: "AIzaSyCUznRu9r4_TF4bUoFHA7ABc9s6HchcFCQ",
-            authDomain: "veschper-10337.firebaseapp.com",
-            projectId: "veschper-10337",
-            storageBucket: "veschper-10337.appspot.com",
-            messagingSenderId: "669264661102",
-            appId: "1:669264661102:web:d00ebc98e472515058f47f",
-            measurementId: "G-ZE987JLHFT"
-        };
-
-        // Firebase initialisieren
-        firebase.initializeApp(firebaseConfig);
-        firebase.analytics();
-        const db = firebase.firestore();
-    </script>
+    <!-- Firebase-Konfigurationsdatei einbinden -->
+    <script src="firebase-config.js" type="module"></script>
 
     <!-- JavaScript Datei einbinden -->
     <script src="script.js"></script>
