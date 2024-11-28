@@ -8,7 +8,6 @@ const dailyOverview = document.getElementById('daily-overview');
 const yesNoSelect = document.getElementById('yes-no');
 const quantitySelect = document.getElementById('quantity');
 const downloadCsvButton = document.getElementById('download-csv');
-const chartCanvas = document.getElementById('chartCanvas');
 
 // Animation bei Absenden
 function showFunnyAnimation() {
@@ -47,7 +46,6 @@ window.addEventListener('load', () => {
 
                 // Dashboard wiederherstellen
                 dailyOverview.innerHTML = data.dailyOverviewHtml || '';
-                updateChart(data.dailyOverview || []);
             }
         })
         .catch((error) => {
@@ -97,24 +95,33 @@ resetButton.addEventListener('click', () => {
     const password = prompt('Bitte gib das Passwort ein, um die Daten zurückzusetzen:');
     if (password === 'meister') {
         const date = new Date().toLocaleDateString();
+        const time = new Date().toLocaleTimeString();
         const total = parseInt(totalCount.textContent);
 
+        // Neue Übersicht zum Dashboard hinzufügen
         db.collection("dailyOverview").add({
-            date: date,
+            date: `${date}, ${time}`,
             total: total
         }).then(() => {
             // Setze den Zustand zurück
             db.collection("websiteState").doc("currentState").set({
                 totalCount: 0,
                 orders: [],
-                dailyOverviewHtml: '',
-                dailyOverview: [{ date: date, total: total }]
+                dailyOverviewHtml: dailyOverview.innerHTML
             }).then(() => {
                 // Tabelle und Summen zurücksetzen
                 tableBody.innerHTML = '';
                 totalCount.textContent = 0;
-                dailyOverview.innerHTML = '';
-                updateChart([{ date: date, total: total }]);
+
+                // Dashboard aktualisieren: Nur die letzten 8 Einträge anzeigen
+                db.collection("dailyOverview").orderBy("date", "desc").limit(8).get().then((querySnapshot) => {
+                    let overviewHtml = '';
+                    querySnapshot.forEach((doc) => {
+                        overviewHtml += `<p>${doc.data().date}: ${doc.data().total} Leberkäswecken</p>`;
+                    });
+                    dailyOverview.innerHTML = overviewHtml;
+                    saveStateToFirestore();
+                });
             });
         }).catch((error) => {
             console.error("Fehler beim Zurücksetzen der Daten: ", error);
@@ -124,47 +131,27 @@ resetButton.addEventListener('click', () => {
     }
 });
 
-// CSV-Download-Funktion
-downloadCsvButton.addEventListener('click', () => {
-    let csvContent = "data:text/csv;charset=utf-8,Name,Antwort,Anzahl\n";
-    tableBody.querySelectorAll('tr').forEach(row => {
-        let rowData = Array.from(row.querySelectorAll('td')).map(cell => cell.textContent).join(",");
-        csvContent += rowData + "\n";
+// Den aktuellen Zustand speichern
+function saveStateToFirestore() {
+    const orders = [];
+    document.querySelectorAll('#order-table tbody tr').forEach((row) => {
+        const cells = row.querySelectorAll('td');
+        orders.push({
+            name: cells[0].textContent,
+            yesNo: cells[1].textContent,
+            quantity: cells[2].textContent === '-' ? 0 : parseInt(cells[2].textContent)
+        });
     });
 
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", "leberkaeswecken_bestellungen.csv");
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-});
+    const dailyOverviewHtml = dailyOverview.innerHTML;
 
-// Update Diagramm mit Chart.js
-function updateChart(dailyOverviewData) {
-    const labels = dailyOverviewData.map(entry => entry.date);
-    const data = dailyOverviewData.map(entry => entry.total);
-
-    const ctx = chartCanvas.getContext('2d');
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'Bestellungen pro Tag',
-                data: data,
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
+    db.collection("websiteState").doc("currentState").set({
+        totalCount: parseInt(totalCount.textContent),
+        orders: orders,
+        dailyOverviewHtml: dailyOverviewHtml
+    }).then(() => {
+        console.log("Der aktuelle Zustand wurde erfolgreich gespeichert.");
+    }).catch((error) => {
+        console.error("Fehler beim Speichern des Zustands: ", error);
     });
 }
