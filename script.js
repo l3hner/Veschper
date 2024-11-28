@@ -23,7 +23,7 @@ window.addEventListener('load', () => {
     console.log("Start: Daten laden.");
 
     // Firestore-Datenbank verwenden (db ist bereits im HTML definiert)
-    db.collection("websiteState").doc("currentState").get()
+    window.db.collection("websiteState").doc("currentState").get()
         .then((doc) => {
             if (doc.exists) {
                 const data = doc.data();
@@ -96,12 +96,12 @@ resetButton.addEventListener('click', () => {
         const date = new Date().toLocaleDateString();
         const total = parseInt(totalCount.textContent);
 
-        db.collection("dailyOverview").add({
+        window.db.collection("dailyOverview").add({
             date: date,
             total: total
         }).then(() => {
             // Setze den Zustand zurück
-            db.collection("websiteState").doc("currentState").set({
+            window.db.collection("websiteState").doc("currentState").set({
                 totalCount: 0,
                 orders: [],
                 dailyOverviewHtml: ''
@@ -137,7 +137,7 @@ function saveStateToFirestore() {
     const dailyOverviewHtml = dailyOverview.innerHTML;
 
     // Speichere den aktuellen Zustand in Firebase
-    db.collection("websiteState").doc("currentState").set({
+    window.db.collection("websiteState").doc("currentState").set({
         totalCount: parseInt(totalCount.textContent),
         orders: orders,
         dailyOverviewHtml: dailyOverviewHtml
