@@ -144,3 +144,54 @@ table th {
     max-width: 90%; /* Begrenzung der maximalen Breite des Textes innerhalb des Bildes */
 }
 
+/* Füge die Media Queries für die mobile Ansicht am Ende der Datei hinzu */
+@media only screen and (max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+
+    header {
+        font-size: 20px; /* Reduziert die Schriftgröße für mobile Geräte */
+        padding: 15px;
+    }
+
+    main {
+        padding: 15px; /* Weniger Padding für mobilen Komfort */
+        box-shadow: none; /* Entferne Schatten auf mobilen Geräten, um den Inhalt schlanker zu machen */
+    }
+
+    .form-group {
+        margin-bottom: 10px; /* Weniger Abstand zwischen Formularfeldern */
+    }
+
+    input, select, button {
+        width: 100%;
+        padding: 8px; /* Reduziert die Größe der Felder */
+    }
+
+    .reset-button, .csv-button {
+        padding: 8px;
+        font-size: 16px; /* Anpassung der Button-Schriftgröße */
+    }
+
+    table th, table td {
+        padding: 8px; /* Weniger Padding in den Tabellenzellen */
+    }
+
+    .total {
+        font-size: 16px; /* Reduzierte Schriftgröße für die Gesamtanzahl */
+    }
+
+    .image-wrapper {
+        max-width: 90%; /* Das Bild wird auf maximal 90 % der Bildschirmbreite begrenzt */
+    }
+
+    .overlay-text {
+        font-size: 10px; /* Kleinere Schriftgröße, damit der Text auf mobilen Geräten besser lesbar ist */
+        padding: 4px 8px; /* Weniger Padding für kleineren Text */
+    }
+
+    h4 {
+        font-size: 18px; /* Verkleinere die Überschrift im Dashboard */
+    }
+}
