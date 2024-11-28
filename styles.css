@@ -130,15 +130,16 @@ table th {
 
 .overlay-text {
     position: absolute;
-    top: 50%;
+    bottom: 10%; /* Positioniert den Text im unteren Viertel des Bildes */
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translateX(-50%);
     color: white;
     background-color: rgba(0, 0, 0, 0.5);
-    padding: 10px 20px;
-    font-size: 16px; /* Leicht verkleinert für eine bessere Darstellung */
-    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 12px; /* Schriftgröße angepasst */
+    border-radius: 4px;
     font-weight: bold;
     text-align: center;
+    max-width: 90%; /* Begrenzung der maximalen Breite des Textes innerhalb des Bildes */
 }
 
