@@ -20,10 +20,7 @@ yesNoSelect.addEventListener('change', () => {
 
 // Daten laden und anzeigen, wenn die Seite geladen wird
 window.addEventListener('load', () => {
-    console.log("Start: Daten laden.");
-
-    // Firestore-Datenbank verwenden (db ist bereits im HTML definiert)
-    window.db.collection("websiteState").doc("currentState").get()
+    db.collection("websiteState").doc("currentState").get()
         .then((doc) => {
             if (doc.exists) {
                 const data = doc.data();
@@ -39,17 +36,15 @@ window.addEventListener('load', () => {
                 // Dashboard wiederherstellen
                 dailyOverview.innerHTML = data.dailyOverviewHtml || '';
             }
-            console.log("Daten erfolgreich geladen.");
         })
         .catch((error) => {
             console.error("Fehler beim Laden des Zustands: ", error);
         });
 });
 
-// Formular-Submit-Ereignis, um den Zustand zu aktualisieren und zu speichern
+// Formular-Submit-Ereignis
 form.addEventListener('submit', (e) => {
     e.preventDefault();
-    console.log("Formular-Submit ausgelöst.");
 
     // Eingaben validieren
     const yesNo = yesNoSelect.value;
@@ -77,8 +72,6 @@ form.addEventListener('submit', (e) => {
     confirmation.style.display = 'block';
     setTimeout(() => (confirmation.style.display = 'none'), 3000);
 
-    console.log("Tabelle und Gesamtanzahl aktualisiert.");
-
     // Den aktuellen Zustand in Firestore speichern
     saveStateToFirestore();
 
@@ -89,19 +82,17 @@ form.addEventListener('submit', (e) => {
 
 // Rücksetzen-Button mit Passwortabfrage
 resetButton.addEventListener('click', () => {
-    console.log("Rücksetzen-Button gedrückt.");
-
     const password = prompt('Bitte gib das Passwort ein, um die Daten zurückzusetzen:');
     if (password === 'meister') {
         const date = new Date().toLocaleDateString();
         const total = parseInt(totalCount.textContent);
 
-        window.db.collection("dailyOverview").add({
+        db.collection("dailyOverview").add({
             date: date,
             total: total
         }).then(() => {
             // Setze den Zustand zurück
-            window.db.collection("websiteState").doc("currentState").set({
+            db.collection("websiteState").doc("currentState").set({
                 totalCount: 0,
                 orders: [],
                 dailyOverviewHtml: ''
@@ -110,7 +101,6 @@ resetButton.addEventListener('click', () => {
                 tableBody.innerHTML = '';
                 totalCount.textContent = 0;
                 dailyOverview.innerHTML = '';
-                console.log("Daten erfolgreich zurückgesetzt und Zustand gespeichert.");
             });
         }).catch((error) => {
             console.error("Fehler beim Zurücksetzen der Daten: ", error);
@@ -122,8 +112,6 @@ resetButton.addEventListener('click', () => {
 
 // Funktion zum Speichern des aktuellen Zustands in Firestore
 function saveStateToFirestore() {
-    console.log("Speichern des aktuellen Zustands in Firestore.");
-
     const orders = [];
     document.querySelectorAll('#order-table tbody tr').forEach((row) => {
         const cells = row.querySelectorAll('td');
@@ -137,7 +125,7 @@ function saveStateToFirestore() {
     const dailyOverviewHtml = dailyOverview.innerHTML;
 
     // Speichere den aktuellen Zustand in Firebase
-    window.db.collection("websiteState").doc("currentState").set({
+    db.collection("websiteState").doc("currentState").set({
         totalCount: parseInt(totalCount.textContent),
         orders: orders,
         dailyOverviewHtml: dailyOverviewHtml
