@@ -1,15 +1,15 @@
 /* Allgemeine Stile */
 body {
     font-family: 'Roboto', sans-serif;
-    background-color: #f3f4f6;
-    color: #333;
-    line-height: 1.6;
     margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    color: #333;
 }
 
 header {
-    background-color: #6200ea;
-    color: #fff;
+    background-color: #8B4513; /* Holzbau-Farben */
+    color: #FFF;
     text-align: center;
     padding: 20px;
     font-size: 24px;
@@ -19,15 +19,10 @@ header {
 main {
     max-width: 800px;
     margin: 20px auto;
-    padding: 20px;
-    background-color: #fff;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.order-section {
     padding: 20px;
-    border-bottom: 2px solid #ececec;
 }
 
 label {
@@ -35,10 +30,10 @@ label {
 }
 
 .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
-input, select {
+input, select, button {
     width: 100%;
     padding: 10px;
     margin-top: 5px;
@@ -47,18 +42,15 @@ input, select {
 }
 
 button {
-    background-color: #6200ea;
-    color: #fff;
-    border: none;
-    padding: 10px;
-    width: 100%;
-    cursor: pointer;
-    border-radius: 4px;
+    background-color: #8B4513; /* Holzbau-Farben */
+    color: white;
     font-weight: bold;
+    border: none;
+    cursor: pointer;
 }
 
 button:hover {
-    background-color: #3700b3;
+    background-color: #5A2A0D; /* Dunklerer Holz-Ton */
 }
 
 table {
@@ -74,49 +66,47 @@ table th, table td {
 }
 
 table th {
-    background-color: #6200ea;
-    color: #fff;
+    background-color: #8B4513; /* Holzbau-Farben */
+    color: white;
 }
 
-.confirmation-message {
-    display: none;
-    margin-top: 20px;
-    background-color: #d4edda;
-    color: #155724;
-    padding: 10px;
-    border-radius: 4px;
-    text-align: center;
+.highlight {
+    color: #8B4513;
+    font-weight: bold;
 }
 
 .total {
     margin-top: 20px;
     font-size: 18px;
     text-align: center;
+    position: relative;
 }
 
 .total span {
+    color: #8B4513; /* Holzbau-Farben */
+    font-size: 22px;
     font-weight: bold;
-    color: #6200ea;
 }
 
 .reset-button {
-    background-color: #b00020;
     margin-top: 20px;
+    background-color: #B22222; /* Ein roter Farbton für den Reset-Button */
+    color: white;
     padding: 10px;
-    color: #fff;
     border: none;
-    cursor: pointer;
     border-radius: 4px;
+    cursor: pointer;
     width: 100%;
 }
 
 .reset-button:hover {
-    background-color: #790000;
+    background-color: #8B0000;
 }
 
 .dashboard {
     margin-top: 20px;
-    background-color: #e3f2fd;
-    padding: 15px;
-    border-radius: 8px;
+    background-color: #fff4e6;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
 }
