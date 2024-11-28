@@ -8,7 +8,7 @@ const dailyOverview = document.getElementById('daily-overview');
 const yesNoSelect = document.getElementById('yes-no');
 const quantitySelect = document.getElementById('quantity');
 
-// Firestore-Datenbank
+// Firestore-Datenbank (db ist bereits initialisiert durch firebase.initializeApp)
 const db = firebase.firestore();
 
 // Daten laden und anzeigen, wenn die Seite geladen wird
@@ -65,28 +65,7 @@ form.addEventListener('submit', (e) => {
     setTimeout(() => (confirmation.style.display = 'none'), 3000);
 
     // Den aktuellen Zustand in Firestore speichern
-    const orders = [];
-    document.querySelectorAll('#order-table tbody tr').forEach((row) => {
-        const cells = row.querySelectorAll('td');
-        orders.push({
-            name: cells[0].textContent,
-            yesNo: cells[1].textContent,
-            quantity: cells[2].textContent === '-' ? 0 : parseInt(cells[2].textContent)
-        });
-    });
-
-    const dailyOverviewHtml = dailyOverview.innerHTML;
-
-    // Speichere den aktuellen Zustand in Firebase
-    db.collection("websiteState").doc("currentState").set({
-        totalCount: currentTotal,
-        orders: orders,
-        dailyOverviewHtml: dailyOverviewHtml
-    }).then(() => {
-        console.log("Der aktuelle Zustand wurde erfolgreich gespeichert.");
-    }).catch((error) => {
-        console.error("Fehler beim Speichern des Zustands: ", error);
-    });
+    saveStateToFirestore();
 
     // Formular zurücksetzen
     form.reset();
@@ -100,11 +79,12 @@ resetButton.addEventListener('click', () => {
         const date = new Date().toLocaleDateString();
         const total = parseInt(totalCount.textContent);
 
+        // Füge die Tagesübersicht hinzu
         db.collection("dailyOverview").add({
             date: date,
             total: total
         }).then(() => {
-            // Firebase-Bestellungen löschen und Zustand zurücksetzen
+            // Setze den Zustand zurück
             db.collection("websiteState").doc("currentState").set({
                 totalCount: 0,
                 orders: [],
@@ -123,3 +103,29 @@ resetButton.addEventListener('click', () => {
         alert('Falsches Passwort. Zurücksetzen nicht möglich.');
     }
 });
+
+// Funktion zum Speichern des aktuellen Zustands in Firestore
+function saveStateToFirestore() {
+    const orders = [];
+    document.querySelectorAll('#order-table tbody tr').forEach((row) => {
+        const cells = row.querySelectorAll('td');
+        orders.push({
+            name: cells[0].textContent,
+            yesNo: cells[1].textContent,
+            quantity: cells[2].textContent === '-' ? 0 : parseInt(cells[2].textContent)
+        });
+    });
+
+    const dailyOverviewHtml = dailyOverview.innerHTML;
+
+    // Speichere den aktuellen Zustand in Firebase
+    db.collection("websiteState").doc("currentState").set({
+        totalCount: parseInt(totalCount.textContent),
+        orders: orders,
+        dailyOverviewHtml: dailyOverviewHtml
+    }).then(() => {
+        console.log("Der aktuelle Zustand wurde erfolgreich gespeichert.");
+    }).catch((error) => {
+        console.error("Fehler beim Speichern des Zustands: ", error);
+    });
+}
