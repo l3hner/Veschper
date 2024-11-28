@@ -8,6 +8,19 @@ const dailyOverview = document.getElementById('daily-overview');
 const yesNoSelect = document.getElementById('yes-no');
 const quantitySelect = document.getElementById('quantity');
 
+// Firestore-Datenbank (db ist bereits initialisiert durch firebase.initializeApp)
+const db = firebase.firestore();
+
+// Abhängigkeit von Ja/Nein für die Anzahl-Auswahl einstellen
+yesNoSelect.addEventListener('change', () => {
+    if (yesNoSelect.value === 'Nein') {
+        quantitySelect.value = '';
+        quantitySelect.disabled = true;
+    } else {
+        quantitySelect.disabled = false;
+    }
+});
+
 // Daten laden und anzeigen, wenn die Seite geladen wird
 window.addEventListener('load', () => {
     console.log("Start: Daten laden.");
