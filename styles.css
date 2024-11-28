@@ -1,3 +1,4 @@
+/* Allgemeine Stile */
 body {
     font-family: 'Roboto', sans-serif;
     margin: 0;
@@ -7,12 +8,34 @@ body {
 }
 
 header {
-    background-color: #6B4226;
+    background-color: #6B4226; /* Holzbraun-Ton */
     color: #FFF;
     text-align: center;
     padding: 20px;
     font-size: 24px;
     font-weight: bold;
+}
+
+.parallax-container {
+    position: relative;
+    height: 400px;
+    background-image: url('./images/meisterkurs-appetit.jpg');
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.parallax-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    border-radius: 8px;
 }
 
 main {
@@ -41,7 +64,7 @@ input, select, button {
 }
 
 button {
-    background-color: #6B4226;
+    background-color: #6B4226; /* Holzbraun-Ton */
     color: white;
     font-weight: bold;
     border: none;
@@ -49,7 +72,7 @@ button {
 }
 
 button:hover {
-    background-color: #4E2C1B;
+    background-color: #4E2C1B; /* Dunklerer Holz-Ton */
 }
 
 table {
@@ -65,7 +88,7 @@ table th, table td {
 }
 
 table th {
-    background-color: #6B4226;
+    background-color: #6B4226; /* Holzbraun-Ton */
     color: white;
 }
 
@@ -103,22 +126,4 @@ table th {
 
 .csv-button:hover {
     background-color: #006400;
-}
-
-.responsive-image {
-    width: 100%;
-    height: auto;
-    display: block;
-    margin: 20px 0;
-}
-
-.scroll-text {
-    font-size: 24px;
-    color: #FFF;
-    text-align: center;
-    background-color: rgba(0, 0, 0, 0.5);
-    padding: 10px;
-    border-radius: 5px;
-    margin-top: 10px;
-    text-align: center;
 }
