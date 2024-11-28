@@ -8,35 +8,37 @@ const dailyOverview = document.getElementById('daily-overview');
 const yesNoSelect = document.getElementById('yes-no');
 const quantitySelect = document.getElementById('quantity');
 
-// Firestore-Datenbank (db ist bereits initialisiert durch firebase.initializeApp)
-const db = firebase.firestore();
-
 // Daten laden und anzeigen, wenn die Seite geladen wird
 window.addEventListener('load', () => {
-    // Lade den gespeicherten Zustand aus Firebase
-    db.collection("websiteState").doc("currentState").get().then((doc) => {
-        if (doc.exists) {
-            const data = doc.data();
-            totalCount.textContent = data.totalCount || 0;
+    console.log("Start: Daten laden.");
 
-            // Tabelle wiederherstellen
-            data.orders.forEach(order => {
-                const row = document.createElement('tr');
-                row.innerHTML = `<td>${order.name}</td><td>${order.yesNo}</td><td>${order.quantity === 0 ? '-' : order.quantity}</td>`;
-                tableBody.appendChild(row);
-            });
+    db.collection("websiteState").doc("currentState").get()
+        .then((doc) => {
+            if (doc.exists) {
+                const data = doc.data();
+                totalCount.textContent = data.totalCount || 0;
 
-            // Dashboard wiederherstellen
-            dailyOverview.innerHTML = data.dailyOverviewHtml || '';
-        }
-    }).catch((error) => {
-        console.error("Fehler beim Laden des Zustands: ", error);
-    });
+                // Tabelle wiederherstellen
+                data.orders.forEach(order => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `<td>${order.name}</td><td>${order.yesNo}</td><td>${order.quantity === 0 ? '-' : order.quantity}</td>`;
+                    tableBody.appendChild(row);
+                });
+
+                // Dashboard wiederherstellen
+                dailyOverview.innerHTML = data.dailyOverviewHtml || '';
+            }
+            console.log("Daten erfolgreich geladen.");
+        })
+        .catch((error) => {
+            console.error("Fehler beim Laden des Zustands: ", error);
+        });
 });
 
 // Formular-Submit-Ereignis, um den Zustand zu aktualisieren und zu speichern
 form.addEventListener('submit', (e) => {
     e.preventDefault();
+    console.log("Formular-Submit ausgelöst.");
 
     // Eingaben validieren
     const yesNo = yesNoSelect.value;
@@ -64,6 +66,8 @@ form.addEventListener('submit', (e) => {
     confirmation.style.display = 'block';
     setTimeout(() => (confirmation.style.display = 'none'), 3000);
 
+    console.log("Tabelle und Gesamtanzahl aktualisiert.");
+
     // Den aktuellen Zustand in Firestore speichern
     saveStateToFirestore();
 
@@ -74,12 +78,13 @@ form.addEventListener('submit', (e) => {
 
 // Rücksetzen-Button mit Passwortabfrage
 resetButton.addEventListener('click', () => {
+    console.log("Rücksetzen-Button gedrückt.");
+
     const password = prompt('Bitte gib das Passwort ein, um die Daten zurückzusetzen:');
     if (password === 'meister') {
         const date = new Date().toLocaleDateString();
         const total = parseInt(totalCount.textContent);
 
-        // Füge die Tagesübersicht hinzu
         db.collection("dailyOverview").add({
             date: date,
             total: total
@@ -106,6 +111,8 @@ resetButton.addEventListener('click', () => {
 
 // Funktion zum Speichern des aktuellen Zustands in Firestore
 function saveStateToFirestore() {
+    console.log("Speichern des aktuellen Zustands in Firestore.");
+
     const orders = [];
     document.querySelectorAll('#order-table tbody tr').forEach((row) => {
         const cells = row.querySelectorAll('td');
