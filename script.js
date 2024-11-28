@@ -8,9 +8,6 @@ const dailyOverview = document.getElementById('daily-overview');
 const yesNoSelect = document.getElementById('yes-no');
 const quantitySelect = document.getElementById('quantity');
 
-// Firestore-Datenbank (db ist bereits initialisiert durch firebase.initializeApp)
-const db = firebase.firestore();
-
 // Abhängigkeit von Ja/Nein für die Anzahl-Auswahl einstellen
 yesNoSelect.addEventListener('change', () => {
     if (yesNoSelect.value === 'Nein') {
@@ -25,6 +22,7 @@ yesNoSelect.addEventListener('change', () => {
 window.addEventListener('load', () => {
     console.log("Start: Daten laden.");
 
+    // Firestore-Datenbank verwenden (db ist bereits im HTML definiert)
     db.collection("websiteState").doc("currentState").get()
         .then((doc) => {
             if (doc.exists) {
