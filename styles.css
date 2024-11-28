@@ -115,18 +115,21 @@ table th {
 .image-wrapper {
     position: relative;
     width: 100%;
-    max-width: 600px; /* Maximalbreite, die sich an der Tabellenbreite orientiert */
-    margin: 20px auto;
-    text-align: center;
+    max-width: 800px; /* Breite verdoppelt auf 800px */
+    margin: 20px auto; /* Zentriert das Bild auf der Seite */
+    overflow: hidden; /* Verhindert Überlaufen */
+    box-sizing: border-box; /* Rahmen zählt zur Gesamtbreite */
 }
 
 .image-bordered {
     width: 100%;
     height: auto;
-    border: 3px solid gold; /* Goldener Rahmen um das Bild */
+    border: 3px solid gold; /* Goldener Rahmen */
     border-radius: 8px;
-    box-sizing: border-box; /* Stellt sicher, dass Rahmen zur Gesamtgröße zählt */
+    display: block;
+    margin: 0 auto;
 }
+
 
 .overlay-text {
     position: absolute;
